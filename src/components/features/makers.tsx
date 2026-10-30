@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
+import maker from '@/assets/maker.jpg';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { applyAsMakerAction } from '@/app/actions/forms';
@@ -94,10 +96,28 @@ export function Makers() {
     <section className="makers" id="makers" aria-labelledby="makersTitle">
       <div className="container makers__grid">
         <div className="makers__copy">
+          <figure className="makers__photo grain arch-soft">
+            <Image src={maker} alt="Illustration of a sweet maker frying khaja in an iron kadhai" sizes="(min-width: 1024px) 48vw, 92vw" />
+            <figcaption>Illustrative image</figcaption>
+          </figure>
           <SplitHeading id="makersTitle" className="h2">
             {t('makers.title')}
           </SplitHeading>
           <p className="lede">{t('makers.lede')}</p>
+          <ul className="makers__kinds">
+            <li>
+              <strong>Home cooks</strong>
+              <span>Family recipes, cooked in small batches.</span>
+            </li>
+            <li>
+              <strong>Local sweet makers</strong>
+              <span>Halwais who still make it by hand.</span>
+            </li>
+            <li>
+              <strong>Regional kitchens</strong>
+              <span>Small businesses rooted in their towns.</span>
+            </li>
+          </ul>
           <ul className="checks">
             {CHECKS.map((c) => (
               <li key={c}>

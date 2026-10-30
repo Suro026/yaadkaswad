@@ -1,6 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
+import festive from '@/assets/festive.jpg';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { useLocale } from '@/i18n/locale';
 import { goToNotify } from '@/lib/notify';
@@ -60,11 +62,27 @@ export function Festival() {
       <svg className="festival__flower f2" viewBox="0 0 800 800" aria-hidden="true">
         <use href="#mark-s" />
       </svg>
+      {Array.from({ length: 14 }, (_, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          className="petal"
+          style={{ left: `${(i * 37) % 100}%`, animationDelay: `${-i * 0.7}s`, animationDuration: `${7 + (i % 4)}s`, background: i % 2 ? 'var(--color-saffron-500)' : 'var(--color-gold-500)' }}
+        />
+      ))}
       <div className="container festival__inner">
-        <SplitHeading id="festTitle" className="h2">
-          {t('fest.title')}
-        </SplitHeading>
-        <p className="lede">{t('fest.lede')}</p>
+        <div className="festival__head">
+          <div>
+            <SplitHeading id="festTitle" className="h2">
+              {t('fest.title')}
+            </SplitHeading>
+            <p className="lede">{t('fest.lede')}</p>
+          </div>
+          <figure className="festival__photo grain arch">
+            <Image src={festive} alt="Illustration of a festive sweets hamper with diyas" sizes="(min-width: 1024px) 34vw, 80vw" />
+            <figcaption>Illustrative image</figcaption>
+          </figure>
+        </div>
         <ul className="fest-list">
           {COLLECTIONS.map((c) => (
             <li key={c.title} className="fest-card">

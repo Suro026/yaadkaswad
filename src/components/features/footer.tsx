@@ -3,7 +3,8 @@
 import { useRef } from 'react';
 import { gsap, SplitText, useGSAP } from '@/lib/gsap';
 import { useLocale } from '@/i18n/locale';
-import { AnchorLink } from '@/components/motion/anchor-link';
+import Link from 'next/link';
+import { NavLink } from '@/components/motion/nav-link';
 import { useMotion } from '@/components/motion/motion-provider';
 import { Logo } from '@/components/brand/sprite';
 
@@ -36,19 +37,21 @@ export function Footer() {
 
   return (
     <footer className="footer">
+      <div className="border-printed" aria-hidden="true" />
       <div className="container footer__top">
         <div className="footer__brand">
-          <AnchorLink className="logo logo--lg" href="#top" aria-label="Yaad Ki Sawad, back to top">
+          <NavLink className="logo logo--lg" href="#top" aria-label="Yaad Ki Sawad, back to top">
             <Logo />
-          </AnchorLink>
+          </NavLink>
           <p className="footer__tag">{t('footer.tag')}</p>
         </div>
         <nav className="footer__nav" aria-label="Footer">
-          <AnchorLink href="#journey">{t('nav.states')}</AnchorLink>
-          <AnchorLink href="#festival">{t('nav.collections')}</AnchorLink>
-          <AnchorLink href="#makers">{t('nav.makers')}</AnchorLink>
-          <AnchorLink href="#how">{t('nav.how')}</AnchorLink>
-          <AnchorLink href="#notify">{t('notify.btn')}</AnchorLink>
+          <Link href="/states">{t('nav.states')}</Link>
+          <NavLink href="#journey">{t('nav.map')}</NavLink>
+          <NavLink href="#festival">{t('nav.collections')}</NavLink>
+          <NavLink href="#makers">{t('nav.makers')}</NavLink>
+          <NavLink href="#how">{t('nav.how')}</NavLink>
+          <NavLink href="#notify">{t('notify.btn')}</NavLink>
         </nav>
         <div className="footer__prefs">
           <button type="button" className="linkbtn" onClick={() => setLang(lang === 'hi' ? 'en' : 'hi')}>

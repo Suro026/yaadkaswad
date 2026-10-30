@@ -182,8 +182,7 @@ html.motion-ready [data-split] { visibility: hidden; animation: show-fallback 0s
 }
 .hero__art { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .hero__rings { position: absolute; top: 50%; right: -24vw; width: min(95vw, 1100px); transform: translateY(-50%); }
-.hero__flower { position: absolute; top: 50%; right: -15vw; width: min(60vw, 820px); transform: translateY(-50%); will-change: transform; }
-.hero__flower svg, .hero__rings svg { width: 100%; height: auto; will-change: transform; }
+.hero__rings svg { width: 100%; height: auto; will-change: transform; }
 .scard { border: 0; text-align: left; font: inherit; cursor: pointer; }
 .hero__body { position: relative; display: grid; gap: 24px; }
 .hero__body > * { max-width: min(100%, 700px); }
@@ -455,7 +454,6 @@ html.motion-ready .hero-rv { opacity: 0; animation: rv-fallback 0s 3.2s forwards
   .how__step:last-child { padding-bottom: 0; }
   .how__node { position: absolute; left: 0; top: 0; margin: 0; }
   .how__step p { max-width: 46ch; }
-  .hero__flower { right: -40vw; top: auto; bottom: 4vh; transform: none; width: 110vw; opacity: .32; }
   .hero__rings { right: -50vw; opacity: .8; }
   .hero { padding-top: calc(var(--header-h) + 36px); }
 }

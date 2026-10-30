@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, motion } from 'motion/react';
 import { useUi } from '@/lib/ui-store';
 import { goToNotify } from '@/lib/notify';
@@ -88,6 +89,9 @@ export function StatePanel() {
           <p className="state-panel__note">
             Representative foods traditionally associated with {state.name}, not exclusive to it. Recipes vary by district and community.
           </p>
+          <Link href={`/states/${state.slug}`} className="state-panel__more" onClick={close}>
+            See the full {state.name} page →
+          </Link>
           <button
             type="button"
             className="btn btn--gold"

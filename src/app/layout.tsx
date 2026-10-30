@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
-import { DM_Sans, Fraunces, Noto_Serif_Devanagari } from 'next/font/google';
+import { Caveat, DM_Sans, Fraunces, Noto_Serif_Devanagari } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import { Sprite } from '@/components/brand/sprite';
 import { Intro } from '@/components/motion/intro';
@@ -12,8 +12,10 @@ import { PinDialog } from '@/components/features/pin-dialog';
 import { StatePanel } from '@/components/map/state-panel';
 import type { Lang } from '@/i18n/locale';
 import './globals.css';
+import './merge.css';
 
-const fraunces = Fraunces({ subsets: ['latin'], axes: ['opsz'], variable: '--font-fraunces', display: 'swap' });
+const fraunces = Fraunces({ subsets: ['latin'], axes: ['opsz'], style: ['normal', 'italic'], variable: '--font-fraunces', display: 'swap' });
+const caveat = Caveat({ subsets: ['latin'], variable: '--font-hand', display: 'swap' });
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans', display: 'swap' });
 const deva = Noto_Serif_Devanagari({ subsets: ['devanagari', 'latin'], weight: ['600', '700'], variable: '--font-deva', display: 'swap' });
 
@@ -40,7 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const lang: Lang = jar.get('ys-lang')?.value === 'hi' ? 'hi' : 'en';
 
   return (
-    <html lang={lang} className={`${fraunces.variable} ${dmSans.variable} ${deva.variable}`} suppressHydrationWarning>
+    <html lang={lang} className={`${fraunces.variable} ${dmSans.variable} ${deva.variable} ${caveat.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: MOTION_GATE }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON_LD }} />

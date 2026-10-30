@@ -4,6 +4,7 @@
 
 export interface IndiaState {
   code: string;
+  slug: string;
   name: string;
   col: number;
   row: number;
@@ -41,7 +42,15 @@ const ROWS: ReadonlyArray<readonly [string, string, number, number, string]> = [
   ['TN', 'Tamil Nadu', 4, 6, 'தமிழ்நாடு'],
 ];
 
-export const STATES: readonly IndiaState[] = ROWS.map(([code, name, col, row, native]) => ({ code, name, col, row, native }));
+export const STATES: readonly IndiaState[] = ROWS.map(([code, name, col, row, native]) => ({
+  code,
+  slug: name.toLowerCase().replace(/ /g, '-'),
+  name,
+  col,
+  row,
+  native,
+}));
+export const STATE_BY_SLUG: Readonly<Record<string, IndiaState>> = Object.fromEntries(STATES.map((s) => [s.slug, s]));
 export const STATES_ALPHA: readonly IndiaState[] = [...STATES].sort((a, b) => a.name.localeCompare(b.name));
 export const STATE_BY_CODE: Readonly<Record<string, IndiaState>> = Object.fromEntries(STATES.map((s) => [s.code, s]));
 

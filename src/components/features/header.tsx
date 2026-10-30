@@ -4,7 +4,8 @@ import { useEffect, useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { useLocale } from '@/i18n/locale';
 import { useUi } from '@/lib/ui-store';
-import { AnchorLink } from '@/components/motion/anchor-link';
+import Link from 'next/link';
+import { NavLink } from '@/components/motion/nav-link';
 import { useMotion } from '@/components/motion/motion-provider';
 import { Logo } from '@/components/brand/sprite';
 
@@ -36,14 +37,15 @@ export function Header() {
   return (
     <header className="site-header" id="header">
       <div className="site-header__bar container">
-        <AnchorLink className="logo" href="#top" aria-label="Yaad Ki Sawad, back to top">
+        <NavLink className="logo" href="#top" aria-label="Yaad Ki Sawad, back to top">
           <Logo />
-        </AnchorLink>
+        </NavLink>
         <nav className="nav" aria-label="Primary">
-          <AnchorLink href="#journey">{t('nav.states')}</AnchorLink>
-          <AnchorLink href="#festival">{t('nav.collections')}</AnchorLink>
-          <AnchorLink href="#makers">{t('nav.makers')}</AnchorLink>
-          <AnchorLink href="#how">{t('nav.how')}</AnchorLink>
+          <Link href="/states">{t('nav.states')}</Link>
+          <NavLink href="#journey">{t('nav.map')}</NavLink>
+          <NavLink href="#festival">{t('nav.collections')}</NavLink>
+          <NavLink href="#makers">{t('nav.makers')}</NavLink>
+          <NavLink href="#how">{t('nav.how')}</NavLink>
         </nav>
         <div className="site-header__tools">
           <button className="pin-chip" type="button" aria-haspopup="dialog" onClick={() => setPinDialogOpen(true)}>
