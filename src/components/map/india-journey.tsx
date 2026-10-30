@@ -6,6 +6,7 @@ import { useLocale } from '@/i18n/locale';
 import { useUi } from '@/lib/ui-store';
 import { SplitHeading } from '@/components/motion/split-heading';
 import { useMotion } from '@/components/motion/motion-provider';
+import { INDIA_SHAPES, MAP_H, MAP_W } from '@/modules/catalog/india-shapes';
 import { ROUTE, ROUTE_DISHES, STATES, STATES_ALPHA, STATE_BY_CODE, foodCount } from '@/modules/catalog/states';
 import { cn } from '@/lib/cn';
 
@@ -15,7 +16,7 @@ const STEPS = ROUTE.length - 1;
    Every state is a real button, with an alphabetical list below as the non-visual alternative. */
 export function IndiaJourney() {
   const { t } = useLocale();
-  const { ready, motionOK, fine } = useMotion();
+  const { ready, motionOK } = useMotion();
   const openPanel = useUi((s) => s.openPanel);
   const panelCode = useUi((s) => s.panelCode);
 
@@ -24,7 +25,7 @@ export function IndiaJourney() {
   const svg = useRef<SVGSVGElement>(null);
   const path = useRef<SVGPathElement>(null);
   const dot = useRef<SVGGElement>(null);
-  const tiles = useRef<Record<string, HTMLButtonElement | null>>({});
+  const tiles = useRef<Record<string, SVGPathElement | null>>({});
   const cum = useRef<number[]>([0, 1]);
 
   const [pinned, setPinned] = useState(false);
@@ -110,46 +111,21 @@ export function IndiaJourney() {
     { scope: section, dependencies: [ready, motionOK] },
   );
 
-  /* Tiles ripple in from the centre once the map scrolls into view. */
+  /* States ripple in from the centre once the map scrolls into view. */
   useGSAP(
     () => {
       if (!ready || !motionOK) return;
-      gsap.from('.tile', {
+      gsap.from('.shape', {
         opacity: 0,
-        y: 26,
+        scale: 0.7,
         duration: 0.8,
         ease: 'back.out(1.6)',
-        stagger: { amount: 0.9, grid: 'auto', from: 'center' },
-        clearProps: 'opacity,transform,translate',
+        stagger: { amount: 1, from: 'center' },
+        clearProps: 'opacity,scale',
         scrollTrigger: { trigger: wrap.current, start: 'top 85%', once: true },
       });
     },
     { scope: section, dependencies: [ready, motionOK] },
-  );
-
-  /* Fisheye: tiles swell towards the pointer. Fine pointers only. */
-  useGSAP(
-    () => {
-      const map = wrap.current;
-      if (!ready || !motionOK || !fine || !map) return;
-      const items = STATES.map((s) => tiles.current[s.code]).filter((el): el is HTMLButtonElement => !!el);
-      const setters = items.map((el) => gsap.quickTo(el, '--mag', { duration: 0.35, ease: 'power3' }));
-      const onMove = (e: PointerEvent) => {
-        items.forEach((el, i) => {
-          const r = el.getBoundingClientRect();
-          const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
-          setters[i]?.(1 + 0.22 * Math.max(0, 1 - d / 130));
-        });
-      };
-      const onLeave = () => setters.forEach((s) => s(1));
-      map.addEventListener('pointermove', onMove);
-      map.addEventListener('pointerleave', onLeave);
-      return () => {
-        map.removeEventListener('pointermove', onMove);
-        map.removeEventListener('pointerleave', onLeave);
-      };
-    },
-    { scope: section, dependencies: [ready, motionOK, fine] },
   );
 
   /* Each state the route reaches pops like a stamp. */
@@ -204,29 +180,36 @@ export function IndiaJourney() {
 
         <div className="journey__map">
           <div ref={wrap} className="mapwrap">
-            <div className="tilemap" role="group" aria-label="Tile map of Indian states. Positions are approximate.">
-              {STATES.map((s) => {
-                const idx = ROUTE.indexOf(s.code);
+            <svg className="indiamap" viewBox={`0 0 ${MAP_W} ${MAP_H}`} role="group" aria-label="Map of India. Select a state to see its foods.">
+              {INDIA_SHAPES.map((sh) => {
+                const st = sh.code ? STATE_BY_CODE[sh.code] : undefined;
+                if (!st) return <path key={sh.name} d={sh.d} className="shape shape--ut" />;
+                const idx = ROUTE.indexOf(st.code);
                 const lit = idx >= 0 && (!pinned || idx <= step.lit);
                 return (
-                  <button
-                    key={s.code}
+                  <path
+                    key={st.code}
                     ref={(el) => {
-                      tiles.current[s.code] = el;
+                      tiles.current[st.code] = el;
                     }}
-                    type="button"
-                    className={cn('tile', lit && 'is-lit', pinned && idx >= 0 && idx === step.cur && 'is-current', panelCode === s.code && 'is-open')}
-                    style={{ gridColumn: s.col + 1, gridRow: s.row + 1 }}
+                    d={sh.d}
+                    role="button"
+                    tabIndex={0}
+                    className={cn('shape', lit && 'is-lit', pinned && idx >= 0 && idx === step.cur && 'is-current', panelCode === st.code && 'is-open')}
                     data-cursor="state"
-                    data-cursor-label={s.name}
-                    aria-label={`${s.name}, ${foodCount(s.code)} traditional foods in the Library`}
-                    onClick={(e) => openPanel(s.code, e.currentTarget)}
-                  >
-                    {s.code}
-                  </button>
+                    data-cursor-label={st.name}
+                    aria-label={`${st.name}, ${foodCount(st.code)} traditional foods in the Library`}
+                    onClick={(e) => openPanel(st.code, e.currentTarget)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openPanel(st.code, e.currentTarget);
+                      }
+                    }}
+                  />
                 );
               })}
-            </div>
+            </svg>
             <svg ref={svg} className={cn('route', pinned && 'is-live')} aria-hidden="true">
               <path ref={path} pathLength={1} />
               <g ref={dot} className="route__dot">
@@ -235,7 +218,7 @@ export function IndiaJourney() {
               </g>
             </svg>
           </div>
-          <p className="map__caption">Tile map. Positions are approximate and tiles do not show borders.</p>
+          <p className="map__caption">Boundaries from a public dataset, not yet verified against Survey of India. Union territories are shown but not selectable.</p>
           <ul id="stateList" className="statelist" aria-label="All states, alphabetical">
             {STATES_ALPHA.map((s) => (
               <li key={s.code}>

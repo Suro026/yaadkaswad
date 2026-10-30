@@ -11,12 +11,12 @@ export interface Prefill {
 interface UiState {
   introDone: boolean;
   panelCode: string | null;
-  returnFocus: HTMLElement | null;
+  returnFocus: HTMLElement | SVGElement | null;
   pinDialogOpen: boolean;
   pin: string;
   prefill: Prefill | null;
   setIntroDone: () => void;
-  openPanel: (code: string, trigger?: HTMLElement | null) => void;
+  openPanel: (code: string, trigger?: HTMLElement | SVGElement | null) => void;
   closePanel: () => void;
   setPinDialogOpen: (open: boolean) => void;
   loadPin: () => void;

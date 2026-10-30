@@ -1,5 +1,5 @@
-/* Tile positions are a cartogram (col, row), NOT borders.
-   TODO(verify): replace with the approved Survey-of-India boundary SVG (ADR-008) before any boundary-style map ships.
+/* col/row below are only used for ordering. The map itself draws boundaries from india-shapes.ts.
+   TODO(verify): the boundary dataset is not confirmed Survey-of-India approved (AGENTS 2.8).
    TODO(verify): native-script spellings with regional sources. */
 
 export interface IndiaState {

@@ -27,7 +27,7 @@ See `AGENTS.md` and `docs/`. In short: vegetarian only, no invented facts (`TODO
 
 - Forms are validated on the server but not stored or sent anywhere.
 - Serviceability, catalogue DB, payments, auth.
-- A boundary map: the tile map is a cartogram. A real map needs an approved boundary dataset first (AGENTS §2.8).
+- Approved boundary map: the map uses a public GeoJSON (pre-2019, Ladakh inside J&K) chosen by the founder; it needs Survey of India sign-off (AGENTS §2.8) before launch.
 - Real product photos. The images in this build are illustrative.
 - Hindi strings need a native-speaker review.
 

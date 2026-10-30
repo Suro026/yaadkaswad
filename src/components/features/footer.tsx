@@ -36,7 +36,7 @@ export function Footer() {
   );
 
   return (
-    <footer className="footer">
+    <footer className="footer" id="contact">
       <div className="border-printed" aria-hidden="true" />
       <div className="container footer__top">
         <div className="footer__brand">
